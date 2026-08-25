@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 test_name 'simp cli set up'
 
 describe 'simp cli set up' do
-
   hosts.each do |host|
     context 'Puppet server set up' do
       include_examples 'configure sshd', host

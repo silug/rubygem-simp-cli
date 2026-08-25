@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 require 'yaml'
 
@@ -7,7 +9,6 @@ host_interfaces = {}
 hosts.each do |host|
   host_interfaces[host] = fact_on(host, 'interfaces').split(',').delete_if { |x| x == 'lo' }
 end
-
 
 # Tests `simp config`, alone, in a server configuration that is akin to
 # installation from RPM.
@@ -26,11 +27,11 @@ describe 'simp config with customization for non-ISO install' do
       include_examples 'remove SIMP omni environment', host, 'production'
 
       options = {
-        :description        => 'without setting grub password and --force-config',
-        :set_grub_password  => false,
-        :priv_user          =>  { :exists => false },
-        :config_opts_to_add => [ '--force-config' ],
-        :interface          => host_interfaces[host].first
+        :description => 'without setting grub password and --force-config',
+        :set_grub_password => false,
+        :priv_user => { :exists => false },
+        :config_opts_to_add => ['--force-config'],
+        :interface => host_interfaces[host].first
       }
 
       include_examples 'simp config operation', host, options
@@ -42,10 +43,10 @@ describe 'simp config with customization for non-ISO install' do
       include_examples 'remove SIMP omni environment', host, 'production'
 
       options = {
-        :description             => 'without use of SIMP internet repos',
+        :description => 'without use of SIMP internet repos',
         :use_simp_internet_repos => false,
-        :priv_user               =>  { :exists => false },
-        :interface               => host_interfaces[host].first
+        :priv_user => { :exists => false },
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -58,8 +59,8 @@ describe 'simp config with customization for non-ISO install' do
       options = {
         :description => 'when not LDAP server',
         :ldap_server => false,
-        :priv_user   =>  { :exists => false },
-        :interface   => host_interfaces[host].first
+        :priv_user => { :exists => false },
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -71,9 +72,9 @@ describe 'simp config with customization for non-ISO install' do
 
       options = {
         :description => 'with logservers but without failover logservers',
-        :logservers  => [ '1.2.3.4', '1.2.3.5'],
-        :priv_user   =>  { :exists => false },
-        :interface   => host_interfaces[host].first
+        :logservers => ['1.2.3.4', '1.2.3.5'],
+        :priv_user => { :exists => false },
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -84,11 +85,11 @@ describe 'simp config with customization for non-ISO install' do
       include_examples 'remove SIMP omni environment', host, 'production'
 
       options = {
-        :description         => 'with logservers and failover logservers',
-        :logservers          => [ '1.2.3.4', '1.2.3.5'],
-        :failover_logservers => [ '1.2.3.6', '1.2.3.7'],
-        :priv_user           =>  { :exists => false },
-        :interface           => host_interfaces[host].first
+        :description => 'with logservers and failover logservers',
+        :logservers => ['1.2.3.4', '1.2.3.5'],
+        :failover_logservers => ['1.2.3.6', '1.2.3.7'],
+        :priv_user => { :exists => false },
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -100,12 +101,12 @@ describe 'simp config with customization for non-ISO install' do
 
       options = {
         :description => 'when local priv user exists without ssh authorized keys',
-        :priv_user   =>  {
-          :name     => 'simpadmin',
-          :exists   => true, # ASSUMES user was created by previous test
+        :priv_user => {
+          :name => 'simpadmin',
+          :exists => true, # ASSUMES user was created by previous test
           :has_keys => false
         },
-        :interface   => host_interfaces[host].first
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -117,12 +118,12 @@ describe 'simp config with customization for non-ISO install' do
 
       options = {
         :description => 'when local priv user exists with ssh authorized keys',
-        :priv_user   =>  {
-          :name     => 'vagrant',
-          :exists   => true, # ASSUMES user already exists
-          :has_keys => true  # ASSUMES authorized_key file exists
+        :priv_user => {
+          :name => 'vagrant',
+          :exists => true, # ASSUMES user already exists
+          :has_keys => true # ASSUMES authorized_key file exists
         },
-        :interface   => host_interfaces[host].first
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -134,8 +135,8 @@ describe 'simp config with customization for non-ISO install' do
 
       options = {
         :description => 'when do not want to ensure local priv user',
-        :priv_user   => nil,
-        :interface   => host_interfaces[host].first
+        :priv_user => nil,
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -149,13 +150,13 @@ describe 'simp config with customization for non-ISO install' do
 
       options = {
         :description => 'when simp_lite_scenario using defaults',
-        :scenario    => 'simp_lite',
-        :priv_user   => {
-          :name     => 'vagrant',
-          :exists   => true,
+        :scenario => 'simp_lite',
+        :priv_user => {
+          :name => 'vagrant',
+          :exists => true,
           :has_keys => true
         },
-        :interface   => host_interfaces[host].first
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
@@ -168,13 +169,13 @@ describe 'simp config with customization for non-ISO install' do
 
         options = {
           :description => 'when poss scenario using defaults',
-          :scenario    => 'poss',
-          :priv_user   => {
-            :name     => 'vagrant',
-            :exists   => true,
+          :scenario => 'poss',
+          :priv_user => {
+            :name => 'vagrant',
+            :exists => true,
             :has_keys => true
           },
-          :interface   => host_interfaces[host].first
+          :interface => host_interfaces[host].first
         }
         include_examples 'simp config operation', host, options
       end
@@ -186,14 +187,14 @@ describe 'simp config with customization for non-ISO install' do
 
         options = {
           :description => 'with poss scenario without LDAP but with SSSD',
-          :scenario    => 'poss',
+          :scenario => 'poss',
           :ldap_server => false,
-          :priv_user   => {
-            :name     => 'vagrant',
-            :exists   => true,
+          :priv_user => {
+            :name => 'vagrant',
+            :exists => true,
             :has_keys => true
           },
-          :interface   => host_interfaces[host].first
+          :interface => host_interfaces[host].first
         }
         include_examples 'simp config operation', host, options
       end
@@ -205,15 +206,15 @@ describe 'simp config with customization for non-ISO install' do
 
         options = {
           :description => 'with poss scenario without either LDAP or SSSD',
-          :scenario    => 'poss',
+          :scenario => 'poss',
           :ldap_server => false,
-          :sssd        => false,
-          :priv_user   => {
-            :name     => 'vagrant',
-            :exists   => true,
+          :sssd => false,
+          :priv_user => {
+            :name => 'vagrant',
+            :exists => true,
             :has_keys => true
           },
-          :interface   => host_interfaces[host].first
+          :interface => host_interfaces[host].first
         }
         include_examples 'simp config operation', host, options
       end
@@ -224,14 +225,14 @@ describe 'simp config with customization for non-ISO install' do
     hosts.each do |host|
       options = {
         :description => 'using SIMP_ENVIRONMENT',
-        :puppet_env  => 'dev',
-        :env_vars    => [ 'SIMP_ENVIRONMENT=dev' ],
-        :priv_user   => {
-          :name     => 'vagrant',
-          :exists   => true,
+        :puppet_env => 'dev',
+        :env_vars => ['SIMP_ENVIRONMENT=dev'],
+        :priv_user => {
+          :name => 'vagrant',
+          :exists => true,
           :has_keys => true
         },
-        :interface   => host_interfaces[host].first
+        :interface => host_interfaces[host].first
       }
       include_examples 'simp config operation', host, options
     end
